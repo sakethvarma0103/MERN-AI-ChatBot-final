@@ -1,0 +1,161 @@
+/* AddBook.css */
+
+/* Basic container styling */
+.add-book-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-book-form h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .add-book-form form {
+    display: grid;
+    grid-gap: 20px;
+  }
+  
+  .add-book-form div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-book-form label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .add-book-form input[type="text"],
+  .add-book-form input[type="number"],
+  .add-book-form input[type="file"] {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    color: #333;
+    transition: all 0.3s ease;
+  }
+  
+  .add-book-form input[type="text"]:focus,
+  .add-book-form input[type="number"]:focus,
+  .add-book-form input[type="file"]:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  
+  .add-book-form input[type="file"] {
+    cursor: pointer;
+    background-color: #f0f0f0;
+  }
+  
+  .add-book-form button {
+    padding: 12px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-book-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .add-book-form .loading-text {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+  }
+  
+  .add-book-form .status-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .add-book-form .status-bar {
+    height: 8px;
+    background-color: #4caf50;
+  }
+  
+  .add-book-form .book-title {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .add-book-form .book-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .add-book-form .book-poster {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  /* Popup styles */
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .popup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .popup h3 {
+    color: #4caf50;
+    font-size: 1.5rem;
+  }
+  
+  .popup p {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

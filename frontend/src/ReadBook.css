@@ -1,0 +1,169 @@
+.readbook-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .readbook-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .loading-text {
+    text-align: center;
+    color: #777;
+    font-size: 1.2rem;
+  }
+  
+  .pdf-document {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .pdf-page {
+    margin-bottom: 20px;
+  }
+
+  .scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress-ring-bg {
+  stroke: #ddd;
+}
+
+.progress-ring-fill {
+  stroke: lightseagreen;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.arrow-icon {
+  position: absolute;
+  top: 13px;
+  left: 13px;
+  color: white;
+  font-size: 24px;
+}
+
+.readbook-container {
+  position: relative;
+}
+
+.readbook-title {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.pdf-document {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pdf-page {
+  margin-bottom: 10px;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 18px;
+}
+
+.scroll-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.arrow-icon {
+  color: white;
+  font-size: 24px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  stroke: #ddd;
+}
+
+.progress-ring-fill {
+  stroke: #00c853;
+  transition: stroke-dashoffset 0.3s;
+}
+
+.readbook-container {
+  position: relative;
+}
+
+.readbook-title {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.pdf-document {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pdf-page {
+  margin-bottom: 10px;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 18px;
+}
+
+.scroll-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.arrow-icon {
+  color: white;
+  font-size: 24px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  stroke: #ddd;
+}
+
+.progress-ring-fill {
+  stroke: #00c853;
+  transition: stroke-dashoffset 0.3s;
+}
