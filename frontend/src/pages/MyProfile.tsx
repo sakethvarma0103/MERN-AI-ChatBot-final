@@ -46,9 +46,7 @@ const MyProfile: React.FC = () => {
           <h2>Name: {user?.name}</h2>
           <p>Email: {user?.email}</p>
           <p>Total Books: {booksCount}</p>
-          <button className="delete-btn" onClick={handleDeleteUser}>
-            Delete Account
-          </button>
+
         </div>
       </div>
     </div>

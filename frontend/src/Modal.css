@@ -63,12 +63,7 @@
     color: black;
   }
   
-  .details-section p {
-    flex-grow: 1;
-    margin-bottom: 20px;
-    color: black;
-  }
-  
+
   .details-section button {
     padding: 10px 20px;
     background-color: #4b6cb7;
@@ -167,3 +162,37 @@
     padding: 20px;
   }
   
+  @media only screen and (max-width: 776px) {
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-content {
+      height:60%;
+    }
+    .poster-section img {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+    }
+    .details-section {
+      flex: 1;
+      padding: 1px;
+    }
+    
+    .details-section h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .details-section button {
+      padding: 12px 12px;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+  }

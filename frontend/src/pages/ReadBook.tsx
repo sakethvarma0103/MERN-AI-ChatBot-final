@@ -5,7 +5,9 @@ import axios from "axios";
 import "../ReadBook.css";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import HomeIcon from '@mui/icons-material/Home';
+import { useMediaQuery, useTheme } from "@mui/material";
 
+// Configure PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url,
@@ -25,6 +27,9 @@ const ReadBook = () => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [scrollPercent, setScrollPercent] = useState(0);
   const [initialPage, setInitialPage] = useState<number | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   let scrollTimeout: number;
 
   const throttle = (callback: () => void, delay: number) => {
@@ -99,7 +104,7 @@ const ReadBook = () => {
             <Page
               key={`page_${index + 1}`}
               pageNumber={index + 1}
-              scale={1}
+              scale={isMobile ? 0.6 : 1}
               renderAnnotationLayer={false}
               renderTextLayer={false}
               className="pdf-page"
