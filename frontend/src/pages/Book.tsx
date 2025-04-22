@@ -43,6 +43,7 @@ const Books: React.FC = () => {
   return (
     <>
       <div className="books-container">
+      <h1>My Readings</h1>
         <div className="book-grid">
           {books.map((book, index) => (
             <div key={index} onClick={() => openModal(book)}>

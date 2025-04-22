@@ -84,3 +84,13 @@ export const updateBookProgress = async (bookId: string, progress: number) => {
   return data;
 };
 
+
+export const deleteBookById = async (id: any) => {
+  try {
+    const res = await axios.delete(`/books/${id}`);
+    console.log("Book deleted:", res.data);
+    return res.data;
+  } catch (err) {
+    console.error("Failed to delete book:", err);
+  }
+};

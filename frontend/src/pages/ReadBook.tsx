@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Document, Page } from "react-pdf";
-import { useParams } from "react-router-dom";
+import { Document, Page, pdfjs } from "react-pdf";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../ReadBook.css";
-import { pdfjs } from 'react-pdf';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import HomeIcon from '@mui/icons-material/Home';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -15,29 +15,29 @@ interface Book {
   _id: string;
   title: string;
   pdfUrl: string;
+  pagesRead: number;
 }
 
 const ReadBook = () => {
   const { id } = useParams();
-  console.log(id);
+  const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [scrollPercent, setScrollPercent] = useState(0);
-  let scrollTimeout: number; // Use 'number' for setTimeout in browsers
+  const [initialPage, setInitialPage] = useState<number | null>(null);
+  let scrollTimeout: number;
 
   const throttle = (callback: () => void, delay: number) => {
-    if (scrollTimeout) {
-      clearTimeout(scrollTimeout);
-    }
+    if (scrollTimeout) clearTimeout(scrollTimeout);
     scrollTimeout = window.setTimeout(callback, delay);
   };
 
-  // Fetch book data
   useEffect(() => {
     const fetchBook = async () => {
       try {
         const res = await axios.get(`/books/${id}`);
         setBook(res.data);
+        setInitialPage(res.data.pagesRead || 1);
       } catch (err) {
         console.error("Error fetching book:", err);
       }
@@ -47,6 +47,14 @@ const ReadBook = () => {
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
+
+    setTimeout(() => {
+      const pageElements = document.querySelectorAll(".react-pdf__Page");
+      if (initialPage && pageElements.length >= initialPage) {
+        const targetPage = pageElements[initialPage - 1] as HTMLElement;
+        targetPage?.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 500);
   };
 
   const handleScroll = () => {
@@ -55,7 +63,7 @@ const ReadBook = () => {
     const scrolled = (scrollTop / winHeight) * 100;
     setScrollPercent(scrolled);
 
-    const currentPage = Math.ceil((scrolled / 100) * numPages!);
+    const currentPage = Math.ceil((scrolled / 100) * (numPages || 1));
     savePageProgress(currentPage);
   };
 
@@ -67,11 +75,10 @@ const ReadBook = () => {
     }
   };
 
-  // Throttling the scroll event
   useEffect(() => {
-    const throttledHandleScroll = () => throttle(handleScroll, 100);
-    window.addEventListener("scroll", throttledHandleScroll);
-    return () => window.removeEventListener("scroll", throttledHandleScroll);
+    const throttledScroll = () => throttle(handleScroll, 200);
+    window.addEventListener("scroll", throttledScroll);
+    return () => window.removeEventListener("scroll", throttledScroll);
   }, [numPages]);
 
   const scrollToTop = () => {
@@ -92,7 +99,9 @@ const ReadBook = () => {
             <Page
               key={`page_${index + 1}`}
               pageNumber={index + 1}
-              width={600}
+              scale={1}
+              renderAnnotationLayer={false}
+              renderTextLayer={false}
               className="pdf-page"
             />
           ))}
@@ -101,6 +110,12 @@ const ReadBook = () => {
         <p className="loading-text">Loading PDF...</p>
       )}
 
+      {/* Home Button */}
+      <div className="go-home-button" onClick={() => navigate("/books")}>
+        <HomeIcon className="home-icon" />
+      </div>
+
+      {/* Scroll To Top Progress Ring */}
       <div className="scroll-to-top" onClick={scrollToTop}>
         <svg className="progress-ring" width="50" height="50">
           <circle
@@ -129,4 +144,3 @@ const ReadBook = () => {
 };
 
 export default ReadBook;
-

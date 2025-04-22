@@ -43,20 +43,33 @@ const Home = () => {
           />
         </Box>
         <Box sx={{ display: "flex", mx: "auto" }}>
-          <img
-            src="chat.png"
-            alt="chatbot"
-            style={{
-              display: "flex",
-              margin: "auto",
-              width: isBelowMd ? "80%" : "60%",
-              borderRadius: 20,
-              boxShadow: "-5px -5px 105px #64f3d5",
-              marginTop: 20,
-              marginBottom: 20,
-              padding: 10,
-            }}
-          />
+        <h4
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    margin: "2rem auto",
+    width: isBelowMd ? "90%" : "60%",
+    padding: "2rem",
+    borderRadius: "1.5rem",
+    background: "rgba(0, 255, 204, 0.05)",
+    backdropFilter: "blur(4px)",
+    boxShadow: "0 10px 40px rgba(100, 243, 213, 0.4)",
+    color: "white",
+    fontSize: isBelowMd ? "1rem" : "1.15rem",
+    lineHeight: 1.7,
+    fontWeight: 500,
+    textAlign: "center",
+    letterSpacing: "0.02rem",
+  }}
+>
+  Welcome to Readify, your personal digital library built to simplify how you manage and enjoy your books. With Readify, you can upload PDFs, add custom posters, and track your reading progress all in one place.
+  <br /><br />
+  Whether you're a casual reader or a book lover, our platform is designed to keep your collection organized, accessible, and always with you.
+  <br /><br />
+  Built on the modern MERN stack (MongoDB, Express, React, and Node.js), Readify ensures a smooth, secure, and responsive experience. From user authentication to profile customization, everything is crafted to put you in control of your reading journey — anytime, anywhere.
+</h4>
+
         </Box>
       </Box>
       <Footer />

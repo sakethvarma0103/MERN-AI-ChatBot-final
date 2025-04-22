@@ -37,7 +37,7 @@ const Header = () => {
             <NavigationLink
               bg="#00fffc"
               to="/books"
-              text="Go To Home"
+              text="Go To My Books"
               textColor="black"
             />
             <Avatar

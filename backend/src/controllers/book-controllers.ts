@@ -109,7 +109,6 @@ export const getSingleBook = async (req: Request, res: Response, next: NextFunct
     // Loop through the books array and log each book's `id`
     const book = user.books.find((b) => {
       // Log to check if _id matches
-      console.log(b._id.equals(new Types.ObjectId(bookId)));  // Compare ObjectIds
 
       return b._id.equals(new Types.ObjectId(bookId));  // Compare ObjectIds
     });
@@ -119,12 +118,12 @@ export const getSingleBook = async (req: Request, res: Response, next: NextFunct
       return res.status(404).json({ message: "Book not found" });
     }
 
-    console.log(book);
     return res.status(200).json({
       _id: book._id,  // MongoDB _id
       id: book.id,    // Custom ID
       title: book.title,
       pdfUrl: book.pdfUrl,
+      pagesRead:book.pagesRead
     });
   } catch (error) {
     console.error("Get single book error:", error);
@@ -147,17 +146,14 @@ export const updateBookProgress = async (req: Request, res: Response, next: Next
     const book = user.books.find((b) => {
       // Log to check if _id matches
       console.log(b._id.equals(new Types.ObjectId(bookId)));  // Compare ObjectIds
-
       return b._id.equals(new Types.ObjectId(bookId));  // Compare ObjectIds
     });
     if (!book) {
       console.log("Not found");
       return res.status(404).json({ message: "Book not found" });
     }
-
     book.pagesRead = progress;
     await user.save();
-
     return res.status(200).json({ message: "Progress updated successfully", book });
   } catch (error) {
     console.error("Update progress error:", error);
@@ -165,3 +161,60 @@ export const updateBookProgress = async (req: Request, res: Response, next: Next
   }
 };
 
+// ❌ Delete a single book by ID
+export const deleteBookById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    console.log("🔐 Verifying user from JWT...");
+    const user = await User.findById(res.locals.jwtData.id);
+
+    if (!user) {
+      console.log("❌ User not found or token invalid");
+      return res.status(401).json({ message: "User not found or invalid token" });
+    }
+
+    const bookId = req.params.id;
+    console.log(`📘 Looking for book with ID: ${bookId}`);
+
+    const bookIndex = user.books.findIndex((b) => b._id.equals(new Types.ObjectId(bookId)));
+    console.log(`📚 Book index in user's array: ${bookIndex}`);
+
+    if (bookIndex === -1) {
+      console.log("❌ Book not found in user's collection");
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    const book = user.books[bookIndex];
+    console.log("✅ Book found:", book.title);
+
+    // Construct paths
+    const pdfPath = path.join(process.cwd(), "src", book.pdfUrl);
+    const posterPath = path.join(process.cwd(), "src", book.poster);
+    console.log("🗂️ PDF path:", pdfPath);
+    console.log("🖼️ Poster path:", posterPath);
+
+    // Delete files
+    if (fs.existsSync(pdfPath)) {
+      fs.unlinkSync(pdfPath);
+      console.log("🧹 Deleted PDF file");
+    } else {
+      console.log("⚠️ PDF file does not exist");
+    }
+
+    if (fs.existsSync(posterPath)) {
+      fs.unlinkSync(posterPath);
+      console.log("🧹 Deleted poster file");
+    } else {
+      console.log("⚠️ Poster file does not exist");
+    }
+
+    // Remove book
+    user.books.splice(bookIndex, 1);
+    await user.save();
+    console.log("✅ Book removed from user document and saved");
+
+    return res.status(200).json({ message: "Book deleted successfully" });
+  } catch (error) {
+    console.error("🔥 Delete book error:", error);
+    return res.status(500).json({ message: "ERROR", cause: error.message });
+  }
+};

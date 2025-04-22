@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookCard from "../components/BookCard";
-import { Dialog, DialogContent, DialogTitle, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./MyBooks.css";
-import "../Modal.css"
+import "../Modal.css";
 
 interface Book {
   _id: string;
@@ -50,6 +49,31 @@ const MyBooks: React.FC = () => {
     }
   };
 
+  const handleDeleteBook = async () => {
+    if (selectedBook) {
+      const confirmDelete = window.confirm(
+        `Are you sure you want to delete "${selectedBook.title}"?`
+      );
+      if (!confirmDelete) return;
+  
+      try {
+        console.log("🧼 Deleting book with ID:", selectedBook._id);
+        
+        const res = await axios.delete(`/books/${selectedBook._id}`, {
+          withCredentials: true,
+        });
+        console.log("Deleted");
+        setBooks((prev) =>
+          prev.filter((book) => book._id !== selectedBook._id)
+        );
+        setSelectedBook(null);
+      } catch (error) {
+        console.error("Failed to delete book", error);
+      }
+    }
+  };
+  
+
   return (
     <div className="my-books-page">
       <h2>My Books</h2>
@@ -82,33 +106,38 @@ const MyBooks: React.FC = () => {
 
       {/* Modal */}
       {selectedBook && (
-  <div className="modal-overlay" onClick={() => setSelectedBook(null)}>
-    <div
-      className="modal-content"
-      onClick={(e) => e.stopPropagation()} // prevent click bubbling
-    >
-      <button className="close-button" onClick={() => setSelectedBook(null)}>
-        &times;
-      </button>
-      <div className="modal-body">
-        <div className="poster-section">
-          <img
-            src={`http://localhost:5000${selectedBook.poster}`}
-            alt={selectedBook.title}
-          />
+        <div className="modal-overlay" onClick={() => setSelectedBook(null)}>
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="close-button" onClick={() => setSelectedBook(null)}>
+              &times;
+            </button>
+            <div className="modal-body">
+              <div className="poster-section">
+                <img
+                  src={`http://localhost:5000${selectedBook.poster}`}
+                  alt={selectedBook.title}
+                />
+              </div>
+              <div className="details-section">
+                <h2>{selectedBook.title}</h2>
+                <p>
+                  Progress: {selectedBook.pagesRead}/{selectedBook.totalPages} pages
+                </p>
+                <button onClick={handleReadBook}>Read Book</button>
+                <button
+                  style={{ backgroundColor: "#dc3545", marginTop: "10px" }}
+                  onClick={handleDeleteBook}
+                >
+                  Delete Book
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="details-section">
-          <h2>{selectedBook.title}</h2>
-          <p>
-            Progress: {selectedBook.pagesRead}/{selectedBook.totalPages} pages
-          </p>
-          <button onClick={handleReadBook}>Read Book</button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
+      )}
     </div>
   );
 };

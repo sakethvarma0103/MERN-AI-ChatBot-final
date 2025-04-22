@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { verifyToken } from "../utils/token-manager.js";
-import { uploadBook, getAllBooks, deleteAllBooks, getSingleBook, updateBookProgress } from "../controllers/book-controllers.js";
 import { upload } from "../utils/multer.js"; // handles PDF file upload
+import { getAllBooks, uploadBook } from "../controllers/book-controllers.js";
+import { deleteAllBooks, deleteBookById, getSingleBook, updateBookProgress } from "../controllers/book-controllers.js";
 
 const bookRoutes = Router();
 
@@ -21,6 +22,9 @@ bookRoutes.get("/", verifyToken, getAllBooks);
 
 // Delete all books for the logged-in user
 bookRoutes.delete("/delete", verifyToken, deleteAllBooks);
+
+// ❌ Delete a single book by ID
+bookRoutes.delete("/:id", verifyToken, deleteBookById); // <-- Add this line
 
 // Get a single book by its ID
 bookRoutes.get("/:id", verifyToken, getSingleBook);

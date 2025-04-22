@@ -1,5 +1,6 @@
 .books-container {
-    padding: 120px;
+    padding: 100px;
+    margin-top: -40px;
   }
   
   .book-grid {
