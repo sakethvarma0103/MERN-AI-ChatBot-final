@@ -57,7 +57,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div ref={sidebarRef} className={`sidebar ${isOpen ? 'open' : ''}`}>
-        <h2>📚 Book App</h2>
+        <h2></h2>
         <ul>
           <li onClick={() => handleNavigation('/')}>🏠 Home</li>
           <li onClick={() => handleNavigation('/my-books')}>📖 My Books</li>

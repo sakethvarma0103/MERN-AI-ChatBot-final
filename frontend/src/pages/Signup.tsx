@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { IoIosLogIn } from "react-icons/io";
-import { Box, Typography, Button } from "@mui/material";
-import CustomizedInput from "../components/shared/CustomizedInput";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +17,10 @@ const Signup = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  // New state for the confirm password input
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,7 +29,6 @@ const Signup = () => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    // Check if passwords match
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -32,21 +39,21 @@ const Signup = () => {
       await auth?.signup(name, email, password);
       toast.success("Signed Up Successfully", { id: "signup" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Signing Up Failed", { id: "signup" });
     }
   };
 
   useEffect(() => {
     if (auth?.user) {
-      return navigate("/books");
+      navigate("/books");
     }
   }, [auth]);
 
   return (
     <Box width={"100%"} height={"100%"} display="flex" flex={1}>
-      <Box padding={8} mt={8} display={{ md: "flex", sm: "none", xs: "none" }}>
-        <img src="airobot.png" alt="Robot" style={{ width: "400px" }} />
+      <Box padding={8} mt={1} ml={16} display={{ md: "flex", sm: "none", xs: "none" }}>
+        <img src="book.png" alt="Robot" style={{ width: "300px" }} />
       </Box>
       <Box
         display={"flex"}
@@ -54,7 +61,7 @@ const Signup = () => {
         justifyContent={"center"}
         alignItems={"center"}
         padding={2}
-        ml={"auto"}
+        ml={16}
         mt={16}
       >
         <form
@@ -79,23 +86,74 @@ const Signup = () => {
               textAlign="center"
               padding={2}
               fontWeight={600}
+              color="white"
             >
               Signup
             </Typography>
-            <CustomizedInput type="text" name="name" label="Name" />
-            <CustomizedInput type="email" name="email" label="Email" />
-            <CustomizedInput
-              type="password"
+
+            <TextField
+              type="text"
+              name="name"
+              label="Name"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              InputLabelProps={{ style: { color: "white" } }}
+              InputProps={{ style: { color: "white" } }}
+            />
+            <TextField
+              type="email"
+              name="email"
+              label="Email"
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              InputLabelProps={{ style: { color: "white" } }}
+              InputProps={{ style: { color: "white" } }}
+            />
+            <TextField
+              type={showPassword ? "text" : "password"}
               name="password"
               label="Password"
-              onChange={(e) => setPassword(e.target.value)} // Update password state
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              InputLabelProps={{ style: { color: "white" } }}
+              InputProps={{
+                style: { color: "white" },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword((prev) => !prev)}>
+                      {showPassword ? <IoEyeOff color="white" /> : <IoEye color="white" />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
-            <CustomizedInput
-              type="password"
+            <TextField
+              type={showConfirm ? "text" : "password"}
               name="confirmPassword"
               label="Confirm Password"
-              onChange={(e) => setConfirmPassword(e.target.value)} // Update confirmPassword state
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              InputLabelProps={{ style: { color: "white" } }}
+              InputProps={{
+                style: { color: "white" },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowConfirm((prev) => !prev)}>
+                      {showConfirm ? <IoEyeOff color="white" /> : <IoEye color="white" />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
+
             <Button
               type="submit"
               sx={{
