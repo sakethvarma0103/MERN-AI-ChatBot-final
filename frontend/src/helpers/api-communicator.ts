@@ -94,3 +94,12 @@ export const deleteBookById = async (id: any) => {
     console.error("Failed to delete book:", err);
   }
 };
+
+export const updateBook = async (id: string, title: string, author: string, genre: string) => {
+  const res = await axios.put(`/books/${id}`, { title, author, genre});
+  if (res.status !== 200) {
+    throw new Error("Unable to update book");
+  }
+  const data = await res.data;
+  return data;
+};

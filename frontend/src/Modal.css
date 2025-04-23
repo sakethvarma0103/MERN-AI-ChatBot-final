@@ -132,7 +132,7 @@
   }
   
   .details-section button {
-    margin-top: 30px;
+    margin-top: 10px;
     padding: 12px 24px;
     font-size: 1rem;
     background-color: #007bff;
@@ -153,6 +153,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  p
+  {
+    color: black;
   }
   
   .poster-section img {

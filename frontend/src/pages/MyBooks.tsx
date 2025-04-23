@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookCard from "../components/BookCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./MyBooks.css";
 import "../Modal.css";
 
@@ -12,6 +12,8 @@ interface Book {
   pdfUrl: string;
   pagesRead: number;
   totalPages: number;
+  genre:string;
+  author:string;
 }
 
 const MyBooks: React.FC = () => {
@@ -106,38 +108,40 @@ const MyBooks: React.FC = () => {
 
       {/* Modal */}
       {selectedBook && (
-        <div className="modal-overlay" onClick={() => setSelectedBook(null)}>
-          <div
-            className="modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button className="close-button" onClick={() => setSelectedBook(null)}>
-              &times;
-            </button>
-            <div className="modal-body">
-              <div className="poster-section">
-                <img
-                  src={`http://localhost:5000${selectedBook.poster}`}
-                  alt={selectedBook.title}
-                />
-              </div>
-              <div className="details-section">
-                <h2>{selectedBook.title}</h2>
-                <p>
-                  Progress: {selectedBook.pagesRead}/{selectedBook.totalPages} pages
-                </p>
-                <button onClick={handleReadBook}>Read Book</button>
-                <button
-                  style={{ backgroundColor: "#dc3545", marginTop: "10px" }}
-                  onClick={handleDeleteBook}
-                >
-                  Delete Book
-                </button>
-              </div>
-            </div>
-          </div>
+  <div className="modal-overlay" onClick={() => setSelectedBook(null)}>
+    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <button className="close-button" onClick={() => setSelectedBook(null)}>
+        &times;
+      </button>
+      <div className="modal-body">
+        <div className="poster-section">
+          <img
+            src={`http://localhost:5000${selectedBook.poster}`}
+            alt={selectedBook.title}
+          />
         </div>
-      )}
+        <div className="details-section">
+          <h2>{selectedBook.title}</h2>
+          {/* Display genre and author */}
+          <p><strong>Genre:</strong> {selectedBook.genre}</p>
+          <p><strong>Author:</strong> {selectedBook.author}</p>
+
+          <button onClick={handleReadBook}>Read Book</button>
+          <Link to={`/edit-book/${selectedBook._id}`}>
+            <button>Edit</button>
+          </Link>
+          <button
+            style={{ backgroundColor: "#dc3545", marginTop: "10px" }}
+            onClick={handleDeleteBook}
+          >
+            Delete Book
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

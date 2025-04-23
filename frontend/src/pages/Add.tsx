@@ -10,6 +10,8 @@ const AddBook: React.FC = () => {
   const [poster, setPoster] = useState<File | null>(null);
   const [pdf, setPDF] = useState<File | null>(null);
   const [numPages, setNumPages] = useState<number | null>(null);
+  const [genre, setGenre] = useState('');
+  const [author, setAuthor] = useState('');
   const [loading, setLoading] = useState(false); // To show loading text
   const [popupMessage, setPopupMessage] = useState(''); // Message for the popup
   const [showPopup, setShowPopup] = useState(false); // Whether to show the popup
@@ -51,6 +53,9 @@ const AddBook: React.FC = () => {
     formData.append('totalPages', totalPages);
     formData.append('poster', poster);
     formData.append('pdf', pdf);
+    formData.append('author', author);
+    formData.append('genre', genre);
+
 
     try {
       const res = await axios.post('/books/new', formData, {
@@ -101,6 +106,15 @@ const AddBook: React.FC = () => {
           {loading && <p>Loading PDF...</p>}
           {numPages && !loading && <p>Number of Pages: {numPages}</p>}
         </div>
+        <div>
+  <label>Author:</label>
+  <input type="text" value={author} onChange={e => setAuthor(e.target.value)} required />
+</div>
+<div>
+  <label>Genre:</label>
+  <input type="text" value={genre} onChange={e => setGenre(e.target.value)} required />
+</div>
+
         <button type="submit">Upload Book</button>
       </form>
 

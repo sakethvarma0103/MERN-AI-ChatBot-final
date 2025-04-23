@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookCard from "../components/BookCard";
 import "../Books.css";
-import Sidebar from "../components/sidebar/Sidebar";
 import "../Modal.css"; // Create this for modal styling
 
 type Book = {

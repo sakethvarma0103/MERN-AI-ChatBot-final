@@ -10,6 +10,7 @@ import AddBook from "./pages/Add";
 import ReadBook from "./pages/ReadBook";
 import MyBooks from "./pages/MyBooks";
 import Profile from "./pages/MyProfile";
+import UpdateBook from "./pages/Update";
 function App() {
   const auth = useAuth();
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/read/:id" element={<ReadBook />} />
         <Route path="/my-books" element={<MyBooks />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/edit-book/:id" element={<UpdateBook />} />
       </Routes>
     </main>
   );

@@ -4,6 +4,8 @@ import mongoose, { Schema } from "mongoose";
 export interface IBook {
   id: string;
   title: string;
+  genre: string; 
+  author: string;// added
   pdfUrl: string;
   poster: string;
   pagesRead: number;
@@ -19,6 +21,14 @@ export const BookSchema = new Schema<IBook>({
   title: {
     type: String,
     required: true,
+  },
+  genre: {
+    type: String,
+    default: "",
+  },
+  author: {
+    type: String,
+    default: "",
   },
   pdfUrl: {
     type: String,

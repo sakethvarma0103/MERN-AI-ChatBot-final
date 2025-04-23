@@ -218,3 +218,31 @@ export const deleteBookById = async (req: Request, res: Response, next: NextFunc
     return res.status(500).json({ message: "ERROR", cause: error.message });
   }
 };
+
+export const updateBookDetails = async (req, res) => {
+  console.log("Incoming data:", req.body);  // Check for title, author, genre here
+  try {
+    const user = await User.findById(res.locals.jwtData.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not found or invalid token" });
+    }
+
+    const bookId = req.params.id;
+    const { title, genre, author } = req.body;  // Extract data from the body
+
+    const book = user.books.find((b) => b._id.equals(new Types.ObjectId(bookId)));
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    if (title) book.title = title;
+    if (genre) book.genre = genre;
+    if (author) book.author = author;
+
+    await user.save();
+    return res.status(200).json({ message: "Book details updated successfully", book });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "ERROR", cause: error.message });
+  }
+};
