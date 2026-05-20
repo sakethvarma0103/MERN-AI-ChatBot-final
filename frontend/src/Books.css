@@ -38,6 +38,12 @@
     margin: 4px 0 4px 0;
     color: black;
   }
+
+  .book-meta {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+  }
   
   .status-bar-container {
     background-color: #eee;

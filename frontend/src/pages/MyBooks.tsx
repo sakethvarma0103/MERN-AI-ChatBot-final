@@ -93,12 +93,14 @@ const MyBooks: React.FC = () => {
         <div className="book-grid">
           {filteredBooks.map((book) => (
             <div key={book._id} onClick={() => handleBookClick(book)}>
-              <BookCard
+                <BookCard
                 book={{
                   title: book.title,
                   poster: book.poster,
                   pagesRead: book.pagesRead,
                   totalPages: book.totalPages,
+                  genre: book.genre,
+                  author: book.author,
                 }}
               />
             </div>

@@ -13,9 +13,12 @@ interface MulterRequest extends Request {
   };
 }
 
+const getErrorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : typeof error === 'string' ? error : JSON.stringify(error);
+
 // 📥 Upload a new book
 export const uploadBook = async (req: MulterRequest, res: Response, next: NextFunction) => {
-  const { title, totalPages } = req.body;
+  const { title, totalPages, author, genre } = req.body;
   const files = req.files;
 
   const pdfFile = files?.pdf?.[0];
@@ -39,6 +42,8 @@ export const uploadBook = async (req: MulterRequest, res: Response, next: NextFu
     const newBook = {
       id: randomUUID(),
       title,
+      author: author || "",
+      genre: genre || "",
       pdfUrl: `/uploads/books/${pdfFile.filename}`,
       poster: `/uploads/books/${posterFile.filename}`,
       pagesRead: 0,
@@ -52,7 +57,7 @@ export const uploadBook = async (req: MulterRequest, res: Response, next: NextFu
     return res.status(201).json({ message: "Book uploaded successfully", book: newBook });
   } catch (error) {
     console.error("Upload error:", error);
-    return res.status(500).json({ message: "Something went wrong", error });
+    return res.status(500).json({ message: "Something went wrong", cause: getErrorMessage(error) });
   }
 };
 
@@ -67,7 +72,7 @@ export const getAllBooks = async (req: Request, res: Response, next: NextFunctio
     return res.status(200).json(user.books);
   } catch (error) {
     console.error("Fetch error:", error);
-    return res.status(500).json({ message: "ERROR", cause: error.message });
+    return res.status(500).json({ message: "ERROR", cause: getErrorMessage(error) });
   }
 };
 
@@ -93,7 +98,7 @@ export const deleteAllBooks = async (req: Request, res: Response, next: NextFunc
     return res.status(200).json({ message: "All books deleted successfully" });
   } catch (error) {
     console.error("Delete error:", error);
-    return res.status(500).json({ message: "ERROR", cause: error.message });
+    return res.status(500).json({ message: "ERROR", cause: getErrorMessage(error) });
   }
 };
 
@@ -110,7 +115,7 @@ export const getSingleBook = async (req: Request, res: Response, next: NextFunct
     const book = user.books.find((b) => {
       // Log to check if _id matches
 
-      return b._id.equals(new Types.ObjectId(bookId));  // Compare ObjectIds
+      return b._id?.equals(new Types.ObjectId(bookId));  // Compare ObjectIds
     });
     
     if (!book) {
@@ -127,7 +132,7 @@ export const getSingleBook = async (req: Request, res: Response, next: NextFunct
     });
   } catch (error) {
     console.error("Get single book error:", error);
-    return res.status(500).json({ message: "ERROR", cause: error.message });
+    return res.status(500).json({ message: "ERROR", cause: getErrorMessage(error) });
   }
 };
 // 📈 Update progress for a specific book
@@ -145,8 +150,8 @@ export const updateBookProgress = async (req: Request, res: Response, next: Next
 
     const book = user.books.find((b) => {
       // Log to check if _id matches
-      console.log(b._id.equals(new Types.ObjectId(bookId)));  // Compare ObjectIds
-      return b._id.equals(new Types.ObjectId(bookId));  // Compare ObjectIds
+      console.log(b._id?.equals(new Types.ObjectId(bookId)));  // Compare ObjectIds
+      return b._id?.equals(new Types.ObjectId(bookId));  // Compare ObjectIds
     });
     if (!book) {
       console.log("Not found");
@@ -157,7 +162,7 @@ export const updateBookProgress = async (req: Request, res: Response, next: Next
     return res.status(200).json({ message: "Progress updated successfully", book });
   } catch (error) {
     console.error("Update progress error:", error);
-    return res.status(500).json({ message: "ERROR", cause: error.message });
+    return res.status(500).json({ message: "ERROR", cause: getErrorMessage(error) });
   }
 };
 
@@ -175,7 +180,7 @@ export const deleteBookById = async (req: Request, res: Response, next: NextFunc
     const bookId = req.params.id;
     console.log(`📘 Looking for book with ID: ${bookId}`);
 
-    const bookIndex = user.books.findIndex((b) => b._id.equals(new Types.ObjectId(bookId)));
+    const bookIndex = user.books.findIndex((b) => b._id?.equals(new Types.ObjectId(bookId)));
     console.log(`📚 Book index in user's array: ${bookIndex}`);
 
     if (bookIndex === -1) {
@@ -215,11 +220,11 @@ export const deleteBookById = async (req: Request, res: Response, next: NextFunc
     return res.status(200).json({ message: "Book deleted successfully" });
   } catch (error) {
     console.error("🔥 Delete book error:", error);
-    return res.status(500).json({ message: "ERROR", cause: error.message });
+    return res.status(500).json({ message: "ERROR", cause: getErrorMessage(error) });
   }
 };
 
-export const updateBookDetails = async (req, res) => {
+export const updateBookDetails = async (req: Request, res: Response, next: NextFunction) => {
   console.log("Incoming data:", req.body);  // Check for title, author, genre here
   try {
     const user = await User.findById(res.locals.jwtData.id);
@@ -230,7 +235,7 @@ export const updateBookDetails = async (req, res) => {
     const bookId = req.params.id;
     const { title, genre, author } = req.body;  // Extract data from the body
 
-    const book = user.books.find((b) => b._id.equals(new Types.ObjectId(bookId)));
+    const book = user.books.find((b) => b._id?.equals(new Types.ObjectId(bookId)));
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
@@ -243,6 +248,6 @@ export const updateBookDetails = async (req, res) => {
     return res.status(200).json({ message: "Book details updated successfully", book });
   } catch (error) {
     console.error("Error:", error);
-    return res.status(500).json({ message: "ERROR", cause: error.message });
+    return res.status(500).json({ message: "ERROR", cause: getErrorMessage(error) });
   }
 };

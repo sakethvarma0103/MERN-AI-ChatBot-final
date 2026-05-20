@@ -7,6 +7,8 @@ type Book = {
   poster: string;
   pagesRead: number;
   totalPages: number;
+  genre: string;
+  author: string;
 };
 
 type BookCardProps = {
@@ -20,6 +22,13 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     <div className="book-card">
       <img src={`http://localhost:5000${book.poster}`} alt={book.title} className="book-poster" />
       <h3 className="book-title">{book.title}</h3>
+      {(book.author || book.genre) && (
+        <p className="book-meta">
+          {book.author && <strong>{book.author}</strong>}
+          {book.author && book.genre ? " · " : ""}
+          {book.genre}
+        </p>
+      )}
       <div className="status-bar-container">
         <div
           className="status-bar"
